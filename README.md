@@ -1,6 +1,6 @@
 # @bogeychan/elysia-etag
 
-A plugin for [Elysia.js](https://elysiajs.com) for [ETag](https://http.dev/etag)
+A plugin for [Elysia.js](https://elysiajs.com) for automatic [HTTP ETag](https://http.dev/etag) generation
 
 ## Installation
 

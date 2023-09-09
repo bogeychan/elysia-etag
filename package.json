@@ -1,7 +1,7 @@
 {
   "name": "@bogeychan/elysia-etag",
   "version": "0.0.1",
-  "description": "A plugin for Elysia.js for ETag",
+  "description": "A plugin for Elysia.js for automatic HTTP ETag generation",
   "author": {
     "name": "bogeychan",
     "url": "https://github.com/bogeychan",
