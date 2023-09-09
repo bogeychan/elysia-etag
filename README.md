@@ -20,9 +20,7 @@ const app = new Elysia()
   .get('/custom-etag', (ctx) => {
     // This line disables automatic ETag generation
     // It will still return a 304 - Not Modified - status code if the ETag matches
-    ctx.setETag('myETag');
-    // or
-    ctx.set.headers['etag'] = '"myETag"';
+    ctx.setETag('"myETag"');
     return 'Hello ETag!';
   })
   .listen(8080);
