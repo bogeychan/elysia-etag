@@ -1,0 +1,44 @@
+{
+  "name": "@bogeychan/elysia-etag",
+  "version": "0.0.1",
+  "description": "A plugin for Elysia.js for ETag",
+  "author": {
+    "name": "bogeychan",
+    "url": "https://github.com/bogeychan",
+    "email": "bogeychan@outlook.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bogeychan/elysia-etag"
+  },
+  "type": "module",
+  "main": "./dist/index.js",
+  "exports": {
+    "require": "./dist/index.js",
+    "import": "./dist/index.js",
+    "node": "./dist/index.js",
+    "default": "./dist/index.js"
+  },
+  "types": "./src/index.ts",
+  "scripts": {
+    "dev": "bun run --watch examples/basic/index.ts",
+    "test": "bun test",
+    "build": "rm -fr dist && tsc --project tsconfig.esm.json",
+    "release": "npm run build && npm run test && npm publish --access public"
+  },
+  "peerDependencies": {
+    "elysia": ">= 0.6.19"
+  },
+  "devDependencies": {
+    "bun-types": "^1.0.1",
+    "elysia": "^0.6.19",
+    "typescript": "^5.2.2"
+  },
+  "homepage": "https://github.com/bogeychan/elysia-etag",
+  "bugs": "https://github.com/bogeychan/elysia-etag/issues",
+  "license": "MIT",
+  "keywords": [
+    "elysia",
+    "etag"
+  ]
+}
