@@ -32,6 +32,10 @@ console.log(`Listening on http://${app.server!.hostname}:${app.server!.port}`);
 
 Checkout the [examples](./examples) folder on github for further use cases.
 
+## Credits ❤️
+
+This project was inspired by [@fastify/etag](https://www.npmjs.com/package/@fastify/etag)
+
 ## Author
 
 [bogeychan](https://github.com/bogeychan)
