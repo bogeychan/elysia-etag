@@ -1,7 +1,5 @@
 import type { ETagHashAlgorithm, ETagHashFunction, ETagOptions } from './types';
 
-import crypto from 'node:crypto';
-
 export function parseMatchHeader(header: string | null) {
   return header?.split(', ') ?? [];
 }
