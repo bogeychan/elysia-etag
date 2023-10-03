@@ -1,4 +1,4 @@
-import type Elysia from 'elysia';
+import Elysia from 'elysia';
 
 import { buildHashFn, canBeHashed, parseMatchHeader } from './utils';
 import type { ETagHashData, ETagOptions, ETagContextApi } from './types';
@@ -10,75 +10,72 @@ export function etag(options: ETagOptions = {}) {
 
   const hash = buildHashFn(options as Required<ETagOptions>);
 
-  return (app: Elysia) => {
-    return app
-      .derive((ctx) => {
-        let matchEtagValues: string[];
-        let noneMatchEtagValues: string[];
+  return new Elysia({ name: '@bogeychan/elysia-etag' })
+    .derive((ctx) => {
+      let matchEtagValues: string[];
+      let noneMatchEtagValues: string[];
 
-        return {
-          setETag(etag) {
-            ctx.set.headers['etag'] = etag;
-          },
-          buildETagFor(response) {
-            return hash(response);
-          },
-          isMatch(etag) {
-            if (!matchEtagValues) {
-              matchEtagValues = parseMatchHeader(ctx.headers['if-match']);
-            }
-
-            return (
-              matchEtagValues.includes(etag) || matchEtagValues.includes('*')
-            );
-          },
-          isNoneMatch(etag) {
-            if (!noneMatchEtagValues) {
-              noneMatchEtagValues = parseMatchHeader(
-                ctx.headers['if-none-match']
-              );
-            }
-
-            return (
-              noneMatchEtagValues.includes(etag) ||
-              noneMatchEtagValues.includes('*')
-            );
-          },
-          setVary(headers) {
-            ctx.set.headers['vary'] =
-              typeof headers === 'string' ? headers : headers.join(', ');
-          }
-        } satisfies ETagContextApi;
-      })
-      .onAfterHandle((ctx, response) => {
-        let etag = ctx.set.headers['etag'];
-
-        if (!etag) {
-          if (!canBeHashed(response)) {
-            return new Response(response as any, ctx.set);
+      return {
+        setETag(etag) {
+          ctx.set.headers['etag'] = etag;
+        },
+        buildETagFor(response) {
+          return hash(response);
+        },
+        isMatch(etag) {
+          if (!matchEtagValues) {
+            matchEtagValues = parseMatchHeader(ctx.headers['if-match']);
           }
 
-          etag = ctx.buildETagFor(response as ETagHashData);
-          ctx.setETag(etag);
+          return (
+            matchEtagValues.includes(etag) || matchEtagValues.includes('*')
+          );
+        },
+        isNoneMatch(etag) {
+          if (!noneMatchEtagValues) {
+            noneMatchEtagValues = parseMatchHeader(
+              ctx.headers['if-none-match']
+            );
+          }
+
+          return (
+            noneMatchEtagValues.includes(etag) ||
+            noneMatchEtagValues.includes('*')
+          );
+        },
+        setVary(headers) {
+          ctx.set.headers['vary'] =
+            typeof headers === 'string' ? headers : headers.join(', ');
+        }
+      } satisfies ETagContextApi;
+    })
+    .onAfterHandle((ctx) => {
+      let etag = ctx.set.headers['etag'];
+
+      if (!etag) {
+        if (!canBeHashed(ctx.response)) {
+          return;
         }
 
-        if (ctx.isNoneMatch(etag)) {
-          switch (ctx.request.method) {
-            case 'GET':
-            case 'HEAD':
-              ctx.set.status = 304; // Not Modified
-              break;
-            default:
-              ctx.set.status = 412; // Precondition Failed
-              break;
-          }
+        etag = ctx.buildETagFor(ctx.response as ETagHashData);
+        ctx.setETag(etag);
+      }
 
-          response = null;
+      if (ctx.isNoneMatch(etag)) {
+        switch (ctx.request.method) {
+          case 'GET':
+          case 'HEAD':
+            ctx.set.status = 304; // Not Modified
+            break;
+          default:
+            ctx.set.status = 412; // Precondition Failed
+            break;
         }
 
-        return new Response(response as any, ctx.set);
-      });
-  };
+        ctx.response = null;
+      }
+    });
 }
 
 export type { ETagHashFunction } from './types';
+

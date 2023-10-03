@@ -1,5 +1,5 @@
 import Elysia from 'elysia';
-import { etag } from '../../src';
+import { etag } from '../src';
 
 let myInsecureChangeCounter = 0;
 
