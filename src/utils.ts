@@ -1,6 +1,6 @@
 import type { ETagHashAlgorithm, ETagHashFunction, ETagOptions } from './types';
 
-export function parseMatchHeader(header: string | null) {
+export function parseMatchHeader(header?: string) {
   return header?.split(', ') ?? [];
 }
 

@@ -1,4 +1,4 @@
-import type { SupportedCryptoAlgorithms } from 'bun';
+import type { StringOrBuffer, SupportedCryptoAlgorithms } from 'bun';
 
 export type ETagOptions = {
   /**
