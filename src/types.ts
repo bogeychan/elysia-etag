@@ -1,4 +1,4 @@
-import type { StringOrBuffer, SupportedCryptoAlgorithms } from 'bun';
+import type { SupportedCryptoAlgorithms } from 'bun';
 
 export type ETagOptions = {
   /**
@@ -19,7 +19,7 @@ export type ETagOptions = {
 };
 
 export type ETagHashAlgorithm = 'wyhash' | SupportedCryptoAlgorithms;
-export type ETagHashData = StringOrBuffer;
+export type ETagHashData = Bun.StringOrBuffer;
 export type ETagHashFunction = (response: ETagHashData) => string;
 
 export type ETagContextApi = {
