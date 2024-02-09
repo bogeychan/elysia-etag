@@ -16,8 +16,8 @@ body:
     attributes:
       label: What versions are running?
       description: Provide your package.json including at least versions of Elysia.JS and the plugin you are running.
-      validations:
-        required: true
+    validations:
+      required: true
   - type: textarea
     attributes:
       label: What steps can reproduce the bug?
