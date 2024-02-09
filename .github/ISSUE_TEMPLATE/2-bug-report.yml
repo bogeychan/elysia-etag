@@ -16,6 +16,15 @@ body:
     attributes:
       label: What versions are running?
       description: Provide your package.json including at least versions of Elysia.JS and the plugin you are running.
+      value: |
+```json
+{
+  "dependencies": {
+    "elysia": "...",
+    "@bogeychan/elysia-etag": "..."
+  }
+}
+```
     validations:
       required: true
   - type: textarea
