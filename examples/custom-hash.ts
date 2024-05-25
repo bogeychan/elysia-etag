@@ -1,17 +1,17 @@
-import Elysia from 'elysia';
-import { etag } from '../src';
+import Elysia from 'elysia'
+import { etag } from '../src'
 
-let myInsecureChangeCounter = 0;
+let myInsecureChangeCounter = 0
 
 const app = new Elysia()
-  .use(
-    etag({
-      hash: (response) => {
-        return (response as string) + myInsecureChangeCounter++;
-      }
-    })
-  )
-  .get('/', () => 'Checkout the response headers!')
-  .listen(8080);
+	.use(
+		etag({
+			hash: (response) => {
+				return (response as string) + myInsecureChangeCounter++
+			}
+		})
+	)
+	.get('/', () => 'Checkout the response headers!')
+	.listen(8080)
 
-console.log(`Listening on ${app.server!.url}`);
+console.log(`Listening on ${app.server!.url}`)

@@ -11,21 +11,21 @@ bun add @bogeychan/elysia-etag
 ## Usage
 
 ```ts
-import { Elysia } from 'elysia';
-import { etag } from '@bogeychan/elysia-etag';
+import { Elysia } from 'elysia'
+import { etag } from '@bogeychan/elysia-etag'
 
 const app = new Elysia()
-  .use(etag())
-  .get('/', () => 'Checkout the response headers!')
-  .get('/custom-etag', (ctx) => {
-    // This line disables automatic ETag generation
-    // It will still return a 304 - Not Modified - status code if the ETag matches
-    ctx.setETag('"myETag"');
-    return 'Hello ETag!';
-  })
-  .listen(8080);
+	.use(etag())
+	.get('/', () => 'Checkout the response headers!')
+	.get('/custom-etag', (ctx) => {
+		// This line disables automatic ETag generation
+		// It will still return a 304 - Not Modified - status code if the ETag matches
+		ctx.setETag('"myETag"')
+		return 'Hello ETag!'
+	})
+	.listen(8080)
 
-console.log(`Listening on http://${app.server!.hostname}:${app.server!.port}`);
+console.log(`Listening on http://${app.server!.hostname}:${app.server!.port}`)
 ```
 
 Checkout the [examples](./examples) folder on github for further use cases.
