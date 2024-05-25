@@ -25,7 +25,7 @@ const app = new Elysia()
 	})
 	.listen(8080)
 
-console.log(`Listening on http://${app.server!.hostname}:${app.server!.port}`)
+console.log(`Listening on ${app.server!.url}`)
 ```
 
 Checkout the [examples](./examples) folder on github for further use cases.
