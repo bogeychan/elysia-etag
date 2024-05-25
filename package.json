@@ -27,11 +27,11 @@
     "release": "npm run build && npm run test && npm publish --access public"
   },
   "peerDependencies": {
-    "elysia": ">= 0.8.16"
+    "elysia": ">= 1.0.22"
   },
   "devDependencies": {
     "@types/bun": "1",
-    "elysia": "^0.8.16",
+    "elysia": "^1.0.22",
     "typescript": "5"
   },
   "homepage": "https://github.com/bogeychan/elysia-etag",

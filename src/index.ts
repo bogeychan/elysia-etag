@@ -11,7 +11,7 @@ export function etag(options: ETagOptions = {}) {
   const hash = buildHashFn(options as Required<ETagOptions>);
 
   return new Elysia({ name: '@bogeychan/elysia-etag' })
-    .derive((ctx) => {
+    .derive({ as: 'global' }, (ctx) => {
       let matchEtagValues: string[];
       let noneMatchEtagValues: string[];
 
@@ -49,7 +49,7 @@ export function etag(options: ETagOptions = {}) {
         }
       } satisfies ETagContextApi;
     })
-    .onAfterHandle((ctx) => {
+    .onAfterHandle({ as: 'global' }, (ctx) => {
       let etag = ctx.set.headers['etag'];
 
       if (!etag) {

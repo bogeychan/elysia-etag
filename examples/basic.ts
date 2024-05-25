@@ -6,4 +6,4 @@ const app = new Elysia()
   .get('/', () => 'Checkout the response headers!')
   .listen(8080);
 
-console.log(`Listening on http://${app.server!.hostname}:${app.server!.port}`);
+console.log(`Listening on ${app.server!.url}`);
