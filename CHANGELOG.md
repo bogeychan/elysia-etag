@@ -1,3 +1,13 @@
+# 0.0.6 - 25 Mai 2024
+
+Bug fix:
+
+- bump elysia to 1.0.22
+
+Improvement:
+
+- added [prettier config](./.prettierrc)
+
 # 0.0.5 - 07 Feb 2024
 
 Bug fix:
