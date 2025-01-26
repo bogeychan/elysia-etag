@@ -1,3 +1,4 @@
+import { CryptoHasher } from 'bun'
 import type { ETagHashAlgorithm, ETagHashFunction, ETagOptions } from './types'
 
 export function parseMatchHeader(header?: string) {
@@ -17,7 +18,7 @@ function validateAlgorithm(algorithm: ETagHashAlgorithm) {
 		return true
 	}
 
-	if (!Bun.CryptoHasher.algorithms.includes(algorithm)) {
+	if (!CryptoHasher.algorithms.includes(algorithm)) {
 		throw new TypeError(`Algorithm ${algorithm} not supported.`)
 	}
 }
@@ -29,7 +30,6 @@ export function buildHashFn({
 }: Required<ETagOptions>): ETagHashFunction {
 	const prefix = weak ? 'W/"' : '"'
 
-	// @ts-ignore hash
 	if (hash) {
 		return (response) => prefix + hash(response) + '"'
 	}
@@ -41,8 +41,5 @@ export function buildHashFn({
 	}
 
 	return (response) =>
-		// prefix + Bun.CryptoHasher.hash(algorithm, response, 'base64') + '"';
-		prefix +
-		new Bun.CryptoHasher(algorithm).update(response).digest('base64') +
-		'"'
+		prefix + CryptoHasher.hash(algorithm, response, 'base64') + '"'
 }
