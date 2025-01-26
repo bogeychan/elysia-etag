@@ -88,14 +88,6 @@ Checkout the [examples](./examples) folder on github for further use cases.
 
 This project was inspired by [@fastify/etag](https://www.npmjs.com/package/@fastify/etag)
 
-## Author
-
-[bogeychan](https://github.com/bogeychan)
-
 ## License
 
 [MIT](LICENSE)
-
-```
-
-```
