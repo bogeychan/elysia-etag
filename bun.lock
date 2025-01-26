@@ -4,9 +4,9 @@
     "": {
       "name": "@bogeychan/elysia-etag",
       "devDependencies": {
-        "@types/bun": "^1.2.0",
-        "elysia": "^1.0.22",
-        "typescript": "5",
+        "@types/bun": "latest",
+        "elysia": "latest",
+        "typescript": "latest",
       },
       "peerDependencies": {
         "elysia": ">= 1.0.22",
