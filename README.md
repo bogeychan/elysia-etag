@@ -74,7 +74,7 @@ let myInsecureChangeCounter = 0
 new Elysia()
 	.use(
 		etag({
-			hash: (response) => {
+			hash(response) {
 				return (response as string) + myInsecureChangeCounter++
 			}
 		})
