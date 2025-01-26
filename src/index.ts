@@ -1,4 +1,4 @@
-import Elysia from 'elysia'
+import { Elysia } from 'elysia'
 
 import { buildHashFn, canBeHashed, parseMatchHeader } from './utils'
 import type { ETagHashData, ETagOptions, ETagContextApi } from './types'

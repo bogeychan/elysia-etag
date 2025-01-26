@@ -13,17 +13,12 @@
   },
   "type": "module",
   "main": "./dist/index.js",
-  "exports": {
-    "require": "./dist/index.js",
-    "import": "./dist/index.js",
-    "node": "./dist/index.js",
-    "default": "./dist/index.js"
-  },
+  "exports": "./dist/index.js",
   "types": "./src/index.ts",
   "scripts": {
     "dev": "bun run --watch examples/basic.ts",
     "test": "bun test",
-    "build": "rm -fr dist && tsc --project tsconfig.esm.json",
+    "build": "bun run ./build.ts",
     "release": "npm run build && npm run test && npm publish --access public"
   },
   "peerDependencies": {
