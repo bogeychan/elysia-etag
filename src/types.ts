@@ -1,4 +1,5 @@
 import type { SupportedCryptoAlgorithms } from 'bun'
+import type { MaybePromise } from 'elysia'
 
 export type ETagOptions = {
 	/**
@@ -16,6 +17,12 @@ export type ETagOptions = {
 	 * If `hash` is provided option `algorithm` is ignored.
 	 */
 	hash?: ETagHashFunction
+	/**
+	 * Converts incompatible data to a hashable format.
+	 *
+	 * @returns `undefined` if unsupported.
+	 */
+	serialize?: (response: unknown) => MaybePromise<ETagHashData | undefined>
 }
 
 export type ETagHashAlgorithm = 'wyhash' | SupportedCryptoAlgorithms

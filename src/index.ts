@@ -1,12 +1,14 @@
-import { Elysia } from 'elysia'
+import { Elysia, type MaybePromise } from 'elysia'
 
 import { buildHashFn, canBeHashed, parseMatchHeader } from './utils'
-import type { ETagHashData, ETagOptions, ETagContextApi } from './types'
+import type { ETagOptions, ETagContextApi } from './types'
 
 export function etag(options: ETagOptions = {}) {
 	if (typeof options.algorithm !== 'string') {
 		options.algorithm = 'sha1'
 	}
+
+	const { serialize } = options
 
 	const hash = buildHashFn(options as Required<ETagOptions>)
 
@@ -45,26 +47,36 @@ export function etag(options: ETagOptions = {}) {
 				}
 			} satisfies ETagContextApi
 		})
-		.onAfterHandle((ctx) => {
-			let etag = ctx.set.headers['etag']
+		.onAfterHandle(async (ctx) => {
+			const { request, set, response } = ctx
+			let etag = set.headers['etag']
 
 			if (!etag) {
-				if (!canBeHashed(ctx.response)) {
-					return
+				let toHash: Bun.StringOrBuffer | undefined
+
+				if (canBeHashed(response)) {
+					toHash = response
+				} else {
+					if (typeof serialize === 'function') {
+						toHash = await serialize(response)
+					}
+					if (typeof toHash === 'undefined') {
+						return
+					}
 				}
 
-				etag = ctx.buildETagFor(ctx.response as ETagHashData)
+				etag = ctx.buildETagFor(toHash)
 				ctx.setETag(etag)
 			}
 
 			if (ctx.isNoneMatch(etag)) {
-				switch (ctx.request.method) {
+				switch (request.method) {
 					case 'GET':
 					case 'HEAD':
-						ctx.set.status = 304 // Not Modified
+						set.status = 304 // Not Modified
 						break
 					default:
-						ctx.set.status = 412 // Precondition Failed
+						set.status = 412 // Precondition Failed
 						break
 				}
 

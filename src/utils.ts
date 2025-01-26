@@ -38,7 +38,7 @@ export function buildHashFn({
 	validateAlgorithm(algorithm)
 
 	if (algorithm === 'wyhash') {
-		return (response) => prefix + Bun.hash(response) + '"'
+		return (response) => prefix + Bun.hash.wyhash(response) + '"'
 	}
 
 	return (response) =>
