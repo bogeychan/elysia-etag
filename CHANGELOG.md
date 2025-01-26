@@ -2,11 +2,11 @@
 
 Feature:
 
-- new `serialize` option
+- new `serialize` option [#1](https://github.com/bogeychan/elysia-etag/issues/1)
 
 Bug fix:
 
-- `canBeHashed` no checks for compatible `Array` format
+- `canBeHashed` no checks for compatible `Array` format [#1](https://github.com/bogeychan/elysia-etag/issues/1#issuecomment-2613771179)
 - bump elysia to 1.2.10
 
 # 0.0.6 - 25 Mai 2024
