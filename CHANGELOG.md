@@ -1,3 +1,14 @@
+# 0.1.0 - 27 Jan 2025
+
+Feature:
+
+- new `serialize` option
+
+Bug fix:
+
+- `canBeHashed` no checks for compatible `Array` format
+- bump elysia to 1.2.10
+
 # 0.0.6 - 25 Mai 2024
 
 Bug fix:
