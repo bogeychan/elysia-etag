@@ -10,8 +10,8 @@ export function etag(options: ETagOptions = {}) {
 
 	const hash = buildHashFn(options as Required<ETagOptions>)
 
-	return new Elysia({ name: '@bogeychan/elysia-etag' })
-		.derive({ as: 'global' }, (ctx) => {
+	return new Elysia({ name: '@bogeychan/elysia-etag', seed: options })
+		.derive((ctx) => {
 			let matchEtagValues: string[]
 			let noneMatchEtagValues: string[]
 
@@ -45,7 +45,7 @@ export function etag(options: ETagOptions = {}) {
 				}
 			} satisfies ETagContextApi
 		})
-		.onAfterHandle({ as: 'global' }, (ctx) => {
+		.onAfterHandle((ctx) => {
 			let etag = ctx.set.headers['etag']
 
 			if (!etag) {
@@ -68,9 +68,11 @@ export function etag(options: ETagOptions = {}) {
 						break
 				}
 
+				// @ts-expect-error never
 				ctx.response = null
 			}
 		})
+		.as('global')
 }
 
 export type { ETagHashFunction } from './types'

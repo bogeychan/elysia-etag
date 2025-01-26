@@ -30,7 +30,7 @@
     "elysia": ">= 1.0.22"
   },
   "devDependencies": {
-    "@types/bun": "1",
+    "@types/bun": "^1.2.0",
     "elysia": "^1.0.22",
     "typescript": "5"
   },
