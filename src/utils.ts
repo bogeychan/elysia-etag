@@ -5,11 +5,12 @@ export function parseMatchHeader(header?: string) {
 	return header?.split(', ') ?? []
 }
 
-export function canBeHashed(response: any) {
+export function canBeHashed(response: unknown): response is Bun.StringOrBuffer {
 	return (
 		typeof response === 'string' ||
 		response instanceof ArrayBuffer ||
-		Array.isArray(response)
+		response instanceof SharedArrayBuffer ||
+		ArrayBuffer.isView(response)
 	)
 }
 

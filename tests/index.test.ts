@@ -1,6 +1,7 @@
 import { Elysia } from 'elysia'
 import { etag } from '../src'
 
+import { CryptoHasher } from 'bun'
 import { describe, expect, it } from 'bun:test'
 
 const req = (
@@ -10,9 +11,39 @@ const req = (
 	body?: string
 ) => new Request(`http://localhost${path}`, { headers, method, body })
 
+describe('Etag - response', () => {
+	class Input {
+		constructor(public value: any) {}
+
+		toJSON() {
+			return this.value.constructor.name
+		}
+	}
+
+	it.each([
+		new Input('Hello World!'),
+		new Input(new ArrayBuffer(42)),
+		new Input(new Uint8Array(42)),
+		new Input(new Uint16Array(42)),
+		new Input(new Uint32Array(42)),
+		new Input(new Int8Array(42)),
+		new Input(new Int16Array(42)),
+		new Input(new Int32Array(42)),
+		new Input(new SharedArrayBuffer(42))
+	])('%j', async ({ value }) => {
+		const app = new Elysia().use(etag()).get('/', () => value)
+
+		const res = await app.handle(req('/'))
+
+		expect(res.headers.get('etag')).toBe(
+			'"' + CryptoHasher.hash('sha1', value, 'base64') + '"'
+		)
+	})
+})
+
 describe('ETag - algorithms', () => {
 	it('should throw an Error if used invalid algorithm', async () => {
-		// @ts-ignore algorithm
+		// @ts-expect-error algorithm
 		expect(() => etag({ algorithm: 'invalid' })).toThrow()
 	})
 
@@ -24,9 +55,7 @@ describe('ETag - algorithms', () => {
 		const res = await app.handle(req('/'))
 
 		expect(res.headers.get('etag')).toBe(
-			'"' +
-				new Bun.CryptoHasher('md5').update('Hello World!').digest('base64') +
-				'"'
+			'"' + CryptoHasher.hash('md5', 'Hello World!', 'base64') + '"'
 		)
 	})
 
@@ -38,9 +67,7 @@ describe('ETag - algorithms', () => {
 		const res = await app.handle(req('/'))
 
 		expect(res.headers.get('etag')).toBe(
-			'"' +
-				new Bun.CryptoHasher('sha1').update('Hello World!').digest('base64') +
-				'"'
+			'"' + CryptoHasher.hash('sha1', 'Hello World!', 'base64') + '"'
 		)
 	})
 
@@ -60,9 +87,7 @@ describe('ETag - algorithms', () => {
 		const res = await app.handle(req('/'))
 
 		expect(res.headers.get('etag')).toBe(
-			'"' +
-				new Bun.CryptoHasher('sha1').update('Hello World!').digest('base64') +
-				'"'
+			'"' + CryptoHasher.hash('sha1', 'Hello World!', 'base64') + '"'
 		)
 	})
 })
@@ -77,9 +102,7 @@ describe('ETag - context api', () => {
 		const res = await app.handle(req('/'))
 
 		expect(await res.text()).toBe(
-			'"' +
-				new Bun.CryptoHasher('sha1').update('Hello World!').digest('base64') +
-				'"'
+			'"' + CryptoHasher.hash('sha1', 'Hello World!', 'base64') + '"'
 		)
 	})
 
@@ -95,9 +118,7 @@ describe('ETag - context api', () => {
 		let res = await app.handle(
 			req('/', {
 				'if-match':
-					'"' +
-					new Bun.CryptoHasher('sha1').update('Hello World!').digest('base64') +
-					'"'
+					'"' + CryptoHasher.hash('sha1', 'Hello World!', 'base64') + '"'
 			})
 		)
 
@@ -108,11 +129,7 @@ describe('ETag - context api', () => {
 		res = await app.handle(
 			req('/', {
 				'if-match':
-					'"' +
-					new Bun.CryptoHasher('sha1')
-						.update('Hello Elysia!')
-						.digest('base64') +
-					'"'
+					'"' + CryptoHasher.hash('sha1', 'Hello Elysia!', 'base64') + '"'
 			})
 		)
 
@@ -141,9 +158,7 @@ describe('ETag - context api', () => {
 		let res = await app.handle(
 			req('/', {
 				'if-none-match':
-					'"' +
-					new Bun.CryptoHasher('sha1').update('Hello World!').digest('base64') +
-					'"'
+					'"' + CryptoHasher.hash('sha1', 'Hello World!', 'base64') + '"'
 			})
 		)
 
@@ -154,11 +169,7 @@ describe('ETag - context api', () => {
 		res = await app.handle(
 			req('/', {
 				'if-none-match':
-					'"' +
-					new Bun.CryptoHasher('sha1')
-						.update('Hello Elysia!')
-						.digest('base64') +
-					'"'
+					'"' + CryptoHasher.hash('sha1', 'Hello Elysia!', 'base64') + '"'
 			})
 		)
 
@@ -185,11 +196,7 @@ describe('ETag - context api', () => {
 				'/',
 				{
 					'if-none-match':
-						'"' +
-						new Bun.CryptoHasher('sha1')
-							.update('Hello World!')
-							.digest('base64') +
-						'"'
+						'"' + CryptoHasher.hash('sha1', 'Hello World!', 'base64') + '"'
 				},
 				'HEAD'
 			)
@@ -208,11 +215,7 @@ describe('ETag - context api', () => {
 				'/',
 				{
 					'if-none-match':
-						'"' +
-						new Bun.CryptoHasher('sha1')
-							.update('Hello World!')
-							.digest('base64') +
-						'"'
+						'"' + CryptoHasher.hash('sha1', 'Hello World!', 'base64') + '"'
 				},
 				'POST'
 			)
