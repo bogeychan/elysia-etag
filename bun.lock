@@ -4,12 +4,12 @@
     "": {
       "name": "@bogeychan/elysia-etag",
       "devDependencies": {
-        "@types/bun": "latest",
-        "elysia": "latest",
-        "typescript": "latest",
+        "@types/bun": "^1.2.0",
+        "elysia": "^1.2.10",
+        "typescript": "^5.7.3",
       },
       "peerDependencies": {
-        "elysia": ">= 1.0.22",
+        "elysia": ">= 1.2.10",
       },
     },
   },

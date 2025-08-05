@@ -1,4 +1,4 @@
-import { Elysia, type MaybePromise } from 'elysia'
+import { Elysia } from 'elysia'
 
 import { buildHashFn, canBeHashed, parseMatchHeader } from './utils'
 import type { ETagOptions, ETagContextApi } from './types'
@@ -80,7 +80,7 @@ export function etag(options: ETagOptions = {}) {
 						break
 				}
 
-				// @ts-expect-error never
+				// @ts-ignore
 				ctx.response = null
 			}
 		})
